@@ -18,9 +18,9 @@ public class CookieMain {
 	
 	JLabel counterLabel, perSecLabel;
 	JButton button1, button2, button3, button4;
-	int cookieCounter, timerSpeed, cursorNumber, cursorPrice, grandpaNumber, grandpaPrice;
+	int cookieCounter, timerSpeed, cursorNumber, cursorPrice, grandpaNumber, grandpaPrice, grandmaNumber, grandmaPrice, oompaloompaNumber, oompaloompaPrice;
 	double perSecond;
-	boolean timerOn, grandpaUnlocked;
+	boolean timerOn, grandpaUnlocked, grandmaUnlocked, oompaloompaUnlocked;
 	Font font1, font2;
 	CookieHandler cHandler = new CookieHandler();
 	Timer timer;
@@ -35,12 +35,18 @@ public class CookieMain {
 		
 		timerOn = false;
 		grandpaUnlocked = false;
+		grandmaUnlocked = false;
+		oompaloompaUnlocked = false;
 		perSecond = 0;
 		cookieCounter = 0;
 		cursorNumber = 0;
 		cursorPrice = 10;
 		grandpaNumber = 0;
 		grandpaPrice = 100;
+		grandmaNumber = 0;
+		grandmaPrice = 500;
+		oompaloompaNumber = 0;
+		oompaloompaPrice = 1000;
 		
 		createFont();
 		createUI();
@@ -48,7 +54,7 @@ public class CookieMain {
 	public void createFont() {
 		
 		// new Font("font name", font style, font size)
-		font1 = new Font("Comic Sans MS", Font.PLAIN, 32);
+		font1 = new Font("Comic Sans MS", Font.PLAIN, 26);
 		font2 = new Font("Comic Sans MS", Font.PLAIN, 15);
 	}
 	public void createUI() {
@@ -123,14 +129,14 @@ public class CookieMain {
 		button3.setFont(font1);
 		button3.setFocusPainted(false);
 		button3.addActionListener(cHandler);
-		button3.setActionCommand("");
+		button3.setActionCommand("Grandma");
 		button3.addMouseListener(mHandler);
 		itemPanel.add(button3);
 		button4 = new JButton("?");
 		button4.setFont(font1);
 		button4.setFocusPainted(false);
 		button4.addActionListener(cHandler);
-		button4.setActionCommand("");
+		button4.setActionCommand("Oompa Loompa");
 		button4.addMouseListener(mHandler);
 		itemPanel.add(button4);
 		
@@ -167,6 +173,18 @@ public class CookieMain {
 						button2.setText("Grandpa" + "(" + grandpaNumber + ")");
 					}
 				}
+				if(grandmaUnlocked==false) {
+					if(cookieCounter>=500) {
+						grandmaUnlocked = true;
+						button3.setText("Grandma" + "(" + grandmaNumber + ")");
+					}
+				}
+				if(oompaloompaUnlocked==false) {
+					if(cookieCounter>=1000) {
+						oompaloompaUnlocked = true;
+						button4.setText("Oompa Loompa" + "(" + oompaloompaNumber + ")");
+					}
+				}
 			}
 		});
 	}
@@ -181,7 +199,7 @@ public class CookieMain {
 		
 		double speed = 1/perSecond*1000;
 		timerSpeed = (int)Math.round(speed);
-		
+
 		String s = String.format("%.1f", perSecond);
 		perSecLabel.setText("per second: " + s);
 		
@@ -196,44 +214,77 @@ public class CookieMain {
 			String action = event.getActionCommand(); // setActionCommand() returns the command name of the action event fired by this button
 			
 			switch(action) {
-			case "cookie":
-				// Increment cookieCounter & updates text each time the cookie is clicked.
-				cookieCounter++;
-				counterLabel.setText(cookieCounter + " cookies");
-				break;
-			case "Cursor":
-				if(cookieCounter >= cursorPrice) {
-					cookieCounter = cookieCounter - cursorPrice;
-					cursorPrice = cursorPrice + 5;
+				case "cookie":
+					// Increment cookieCounter & updates text each time the cookie is clicked.
+					cookieCounter++;
 					counterLabel.setText(cookieCounter + " cookies");
-					
-					cursorNumber++;
-					button1.setText("Cursor" + "(" + cursorNumber + ")");
-					messageText.setText("Cursor\n[price: " + cursorPrice + "]\nAutoclicks once every 10 seconds.");
-					perSecond = perSecond + 0.1;
-					timerUpdate();
-				}
-				else {
-					messageText.setText("You need more cookies!");
-				}
-				break;
-			case "Grandpa":
-				if(cookieCounter >= grandpaPrice) {
-					cookieCounter = cookieCounter - grandpaPrice;
-					grandpaPrice = grandpaPrice + 50;
-					counterLabel.setText(cookieCounter + " cookies");
-					
-					grandpaNumber++;
-					button2.setText("Grandpa" + "(" + grandpaNumber + ")");
-					messageText.setText("Grandpa\n[price: " + grandpaPrice + "]\nEach Grandpa produces 1 cookie per second");
-					perSecond = perSecond + 1;
-					timerUpdate();
-				}
-				else {
-					messageText.setText("You need more cookies!");
-				}
+					break;
+				case "Cursor":
+					if(cookieCounter >= cursorPrice) {
+						cookieCounter = cookieCounter - cursorPrice;
+						cursorPrice = cursorPrice + 5;
+						counterLabel.setText(cookieCounter + " cookies");
+
+						cursorNumber++;
+						button1.setText("Cursor" + "(" + cursorNumber + ")");
+						messageText.setText("Cursor\n[price: " + cursorPrice + "]\nAutoclicks once every 10 seconds.");
+						perSecond = perSecond + 0.1;
+						timerUpdate();
+					}
+					else {
+						messageText.setText("You need more cookies!");
+					}
+					break;
+				case "Grandpa":
+					if(cookieCounter >= grandpaPrice) {
+						cookieCounter = cookieCounter - grandpaPrice;
+						grandpaPrice = grandpaPrice + 50;
+						counterLabel.setText(cookieCounter + " cookies");
+
+						grandpaNumber++;
+						button2.setText("Grandpa" + "(" + grandpaNumber + ")");
+						messageText.setText("Grandpa\n[price: " + grandpaPrice + "]\nEach Grandpa produces 1 cookie per second");
+						perSecond = perSecond + 1;
+						timerUpdate();
+					}
+					else {
+						messageText.setText("You need more cookies!");
+					}
+					break;
+				case "Grandma":
+					if(cookieCounter >= grandmaPrice) {
+						cookieCounter = cookieCounter - grandmaPrice;
+						grandmaPrice = grandmaPrice + 150;
+						counterLabel.setText(cookieCounter + " cookies");
+
+						grandmaNumber++;
+						button3.setText("Grandma" + "(" + grandmaNumber + ")");
+						messageText.setText("Grandma\n[price: " + grandmaPrice + "]\nEach Grandma produces 5 cookie per second");
+						perSecond = perSecond + 5;
+						timerUpdate();
+					}
+					else {
+						messageText.setText("You need more cookies!");
+					}
+					break;
+				case "Oompa Loompa":
+					if(cookieCounter >= oompaloompaPrice) {
+						cookieCounter = cookieCounter - oompaloompaPrice;
+						oompaloompaPrice = oompaloompaPrice + 300;
+						counterLabel.setText(cookieCounter + " cookies");
+
+						oompaloompaNumber++;
+						button4.setText("Oompa Loopa" + "(" + oompaloompaNumber + ")");
+						messageText.setText("Oompa Loompa\n[price: " + oompaloompaPrice + "]\nEach Oompa-Loompa produces 10 cookies per second");
+						perSecond = perSecond + 10;
+						timerUpdate();
+					}
+					else {
+						messageText.setText("You need more cookies!");
+					}
+					break;
 			}
-			
+
 		}
 	}
 	public class MouseHandler implements MouseListener{
@@ -268,10 +319,21 @@ public class CookieMain {
 				}
 			}
 			else if(button == button3) {
-				messageText.setText("This item is currently locked!");
+
+				if(grandmaUnlocked==false) {
+					messageText.setText("This item is currently locked!");
+				}
+				else {
+					messageText.setText("Grandma\n[price: " + grandmaPrice + "]\nEach Grandma produces 5 cookies per second");
+				}
 			}
 			else if(button == button4) {
-				messageText.setText("This item is currently locked!");
+				if(oompaloompaUnlocked==false) {
+					messageText.setText("This item is currently locked!");
+				}
+				else {
+					messageText.setText("Oompa Loopa\n[price: " + oompaloompaPrice + "]\nEach Oompa Loopa produces 10 cookies per second");
+				}
 			}
 		}
 		@Override
